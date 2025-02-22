@@ -1,7 +1,40 @@
+import { Link } from "react-router-dom";
+import { Input } from "../../components/input";
+import { FormEvent, useState } from "react";
+
 export function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("")
+
+    function handleSubmit(e: FormEvent){
+        e.preventDefault();
+        
+    }
+
+
     return(
-        <div>
-            <h1>Login</h1>
+        <div className="flex w-full h-screen items-center justify-center flex-col">
+            <Link to="/">
+                <h1 className="mt-20 text-stone-700 mb-7 font-bold text-4xl md:text-5xl">Show my <span className="bg-gradient-to-r from-blue-700 to-violet-900 bg-clip-text text-transparent">Links</span></h1>
+            </Link>
+
+            <form onSubmit={handleSubmit} action="" className="w-full max-w-xl flex flex-col">   
+            <Input 
+                placeholder="Login" 
+                type="text" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input 
+                placeholder="Senha" 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                />
+            <button className="h-9 bg-sky-600 rounded border-0 text-lg font-medium text-stone-800" type="submit">
+                Acessar
+            </button>
+            </form>
         </div>
     )
 }
