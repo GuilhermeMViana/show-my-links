@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
 import { Links } from "../../components/Links";
 import { FiTrash } from "react-icons/fi";
+import { firestore} from "../../services/firebaseConnection"
+import { addDoc, collection } from "firebase/firestore"
 
 export function Admin() {
     const [nameInput, setNameInput] = useState("")
@@ -10,11 +12,39 @@ export function Admin() {
     const [textColor, setTextColor] = useState("#ffffff")
     const [backgroundColor, setBackgroundColor] = useState("#000000")
 
+    function handleRegister(e: FormEvent) {
+        e.preventDefault()
+
+        if (nameInput === "" || urlInput === "") {
+            alert("Preencha todos os campos")
+            return
+        }
+
+        addDoc(collection(firestore, "links"), {
+            name: nameInput,
+            url: urlInput,
+            bg: backgroundColor,
+            color: textColor,
+            created: new Date()
+        })
+        .then( () => {
+            setNameInput("")
+            setUrlInput("")
+            alert("Cadastrado com sucesso!")
+        })
+        .catch( (error) => {
+            console.log("erro:", error)
+        })
+
+        setNameInput("")
+        setUrlInput("")
+    }
+
     return(
         <div className="flex items-center flex-col min-h-screen pb-7 px-2">
             <Header/>
 
-            <form action="" className="flex flex-col mt-10 mb-3 w-full max-w-xl">
+            <form onSubmit={handleRegister} className="flex flex-col mt-10 mb-3 w-full max-w-xl">
                 <label htmlFor="" className="text-stone-800 font-medium mt-2 mb-2">Título do link</label>
                 <Input
                     placeholder="Título"
@@ -57,7 +87,7 @@ export function Admin() {
                 </div>
                 )}
                 
-                <button type="submit" className="bg-sky-700 h-9 rounded-md text-stone-300 font-medium gap-3 flex justify-center items-center mb-7">
+                <button type="submit" className="bg-sky-700 h-9 rounded-md text-stone-300 font-medium gap-3 flex justify-center items-center mb-7 cursor-pointer">
                     Cadastrar
                 </button>
             </form>
@@ -66,13 +96,13 @@ export function Admin() {
                 Meus links
             </h2>
 
-            <div className="flex justify-between items-center w-11/12 max-w-xl rounded py-3 px-2 mb-2">
+            <div className="flex justify-between items-center w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none bg-teal-800">
                 <div>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur, voluptas!</p>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit!</p>
                 </div>
                 <div>
-                    <button className="border- border-dashed py-1 px-2">
-                        <FiTrash size={24} color="#ffffff"/>    
+                    <button className="border border-dashed rounded py-1 px-2 bg-neutral-900">
+                        <FiTrash size={20} color="#ffffff"/>    
                     </button>
                 </div>
             </div>
