@@ -106,6 +106,10 @@ export function Admin() {
                     </button>
                 </div>
             </div>
+
+            <div className="w-11/12 max-w-xl text-center">
+                <Links title="teste" url="https://www.google.com" colorProps={ { backgroundColor: 'red' } } textStyle={ { color: '#ffffff'} } deleteButton/>
+            </div>
         </div>
     )
 }
